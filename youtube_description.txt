@@ -1,0 +1,20 @@
+🚀 CloudVault - Secure Cloud Storage | MERN Stack Project & AWS S3
+
+Welcome to CloudVault, a powerful Google Drive clone built to handle secure file storage and sharing. This full-stack application allows users to upload, organize, and share files globally with industrial-grade security.
+
+🌟 Key Features:
+• 🔐 Secure Authentication: Two-step verification with email activation (JWT + BCrypt).
+• 📂 Smart File Management: Create nested folders, upload via Drag & Drop, and navigate with breadcrumbs.
+• ☁️ AWS S3 Integration: Scalable and secure file storage in the cloud.
+• 🔗 Easy Sharing: Generate public links for files and entire folders (Incognito-proof!).
+• 🎨 Modern UI: Stunning Glassmorphism design built with React and Vanilla CSS.
+
+🛠️ Tech Stack:
+• Frontend: React.js, Vite
+• Backend: Node.js, Express.js
+• Database: MongoDB Atlas
+• Storage: AWS S3
+• Deployment: Render (Full Stack)
+
+Check out the code on GitHub! 👇
+https://github.com/mk1945/cloudvault.git

@@ -1,0 +1,98 @@
+# CloudVault Project Demo Script
+**Duration:** Approx. 5 Minutes
+**Speaker:** You (The Developer)
+
+---
+
+### **0:00 - 0:45 | Introduction & Overview**
+**(Screen: Show the Landing Page / Login Page of CloudVault)**
+
+"Hello everyone! Welcome to **CloudVault**.
+
+This is a full-stack cloud storage application—basically my own version of Google Drive—that allows users to securely upload, manage, and share their files from anywhere.
+
+I built this project to solve a real-world problem: secure and accessible file storage, using a modern **MERN Stack** architecture. That means MongoDB, Express.js, React, and Node.js.
+
+But I didn't just stop at basic uploads. I integrated **AWS S3** for industrial-grade file storage, **Nodemailer** for real-world authentication emails, and deployed the entire system on **Render** for live access.
+
+Let me walk you through the features."
+
+---
+
+### **0:45 - 1:30 | Authentication & Security**
+**(Action: Click 'Create Account'. Fill in details. Show the 'Check Email' screen)**
+
+"First, let's look at security. I didn't want anonymous users flooding the system, so I implemented a **Two-Step Verification** flow.
+
+When I register a new user, the system doesn't just let me in. It generates a secure JWT token and sends an activation email."
+
+**(Action: Switch to your Email/Console/Ethereal to show the link. Click it.)**
+
+"Once I click the activation link, my account is verified in the database. Now, I can log in.
+
+Behind the scenes, the backend is using **BCrypt** to hash passwords—so they are never stored as plain text—and issuing **JSON Web Tokens** to keep my session secure."
+
+---
+
+### **1:30 - 2:30 | Dashboard & Core Features**
+**(Action: Log in. Land on Dashboard. Mouse over the UI elements.)**
+
+"Welcome to the Dashboard. As you can see, I focused heavily on UI/UX. I used a **Glassmorphism** design style with **Vanilla CSS** to give it this premium, modern look—similar to Windows 11 or MacOS.
+
+Is it functional? Absolutely.
+
+**(Action: Drag a file from your desktop and drop it onto the browser)**
+
+I implemented a **Drag-and-Drop** zone. I can just grab a file from my computer, drop it here, and it instantly uploads to the cloud.
+
+**(Action: Click 'New Folder'. Name it 'Project Demo'. Open the folder.)**
+
+I can also organize my life with **Folders**. This supports nested folders—folders inside folders—just like your operating system. Navigate using these dynamic **Breadcrumbs** at the top."
+
+---
+
+### **2:30 - 3:15 | Sharing & Collaboration**
+**(Action: Hover over a file. Click the 'Share' icon.)**
+
+"A cloud drive isn't useful if you can't share.
+If I want to send this file to a friend, I click 'Share'. The system talks to AWS and generates a **Time-Limited Signed URL**.
+
+This link is public but secure. It expires automatically, so my data doesn't stay exposed forever.
+
+**(Action: Go back to Dashboard. Create a folder with 2 files. Click Share on the Folder.)**
+
+And here is the coolest feature: **Folder Sharing**.
+I can generate a public link for an entire folder. If I open this in an Incognito window..."
+
+**(Action: Open Incognito window. Paste link.)**
+
+"...You can see a read-only view of my shared folder. Anyone with this link can download the files without needing an account. This required creating a custom public API endpoint that bypasses the usual auth checks for specific tokens."
+
+---
+
+### **3:15 - 4:15 | Under the Hood (The Proof)**
+"Now, let's prove that this data is actually real and secure.
+
+**(Action: Switch tab to MongoDB Atlas Collection)**
+
+Here is my **MongoDB Atlas** database. If I refresh the `users` collection, you can see the user I just created. Notice the password is encrypted.
+If I check the `files` collection, you can see the metadata for the files I uploaded—filename, size, and the folder structure.
+
+**(Action: Switch tab to AWS S3 Console)**
+
+But where are the actual files? They aren't in the database; that would be slow.
+Here is my **AWS S3 Bucket**. If I refresh, you see the new objects appearing here. This ensures CloudVault can handle massive files without slowing down the server."
+
+---
+
+### **4:15 - 5:00 | Conclusion & Deployment**
+**(Action: Switch back to the deployed application text)**
+
+"Finally, this isn't running on my localhost anymore. I have deployed the entire stack to **Render**.
+- The Backend is running as a Node.js Web Service.
+- The Frontend is hosted as a Static Site.
+- They talk to each other securely over HTTPS.
+
+Building CloudVault taught me how to handle complex file systems, secure authentication flows, and cloud infrastructure integration.
+
+Thank you for watching!"
