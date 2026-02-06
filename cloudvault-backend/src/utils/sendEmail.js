@@ -1,45 +1,31 @@
-const nodemailer = require('nodemailer');
+const SibApiV3Sdk = require('sib-api-v3-sdk');
 
 const sendEmail = async (options) => {
-    // secure: true for 465, false for other ports
-    // For Development (using Ethereal or similar if credentials are mock):
-    // const transporter = nodemailer.createTransport({
-    //    host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-    //    port: process.env.SMTP_PORT || 587,
-    //    auth: {
-    //        user: process.env.SMTP_EMAIL,
-    //        pass: process.env.SMTP_PASSWORD
-    //    }
-    // });
+    // API Setup
+    const defaultClient = SibApiV3Sdk.ApiClient.instance;
+    const apiKey = defaultClient.authentications['api-key'];
+    apiKey.apiKey = process.env.BREVO_API_KEY; // Requires 'xkeysib-...' key
 
-    // Using basic SMTP or Gmail (Not recommended for production without OAuth2, but fine for simple projects)
-    // Switch to Port 587 (STARTTLS) which is often less blocked on Cloud Servers than 465
-    const transporter = nodemailer.createTransport({
-        host: 'smtp-relay.brevo.com',
-        port: 2525, // Port 2525 is a common alternative when 587 is blocked
-        secure: false, // true for 465, false for other ports
-        auth: {
-            user: process.env.SMTP_EMAIL,
-            pass: process.env.SMTP_PASSWORD,
-        },
-        tls: {
-            rejectUnauthorized: false
-        },
-        family: 4, // Force IPv4
-        logger: true, // Log to console
-        debug: true // Include SMTP traffic in logs
-    });
+    const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
-    const message = {
-        from: `${process.env.FROM_NAME || 'CloudVault'} <${process.env.FROM_EMAIL || process.env.SMTP_EMAIL}>`,
-        to: options.email,
-        subject: options.subject,
-        html: options.message, // Use HTML for better looking emails
-    };
+    // Configure Email
+    sendSmtpEmail.subject = options.subject;
+    sendSmtpEmail.htmlContent = options.message;
+    // Use the authenticated email from Brevo as the sender
+    sendSmtpEmail.sender = { "name": process.env.FROM_NAME || "CloudVault", "email": process.env.SMTP_EMAIL };
+    sendSmtpEmail.to = [{ "email": options.email }];
 
-    const info = await transporter.sendMail(message);
+    console.log(`Attempting to send email to ${options.email} via Brevo API...`);
 
-    console.log('Message sent: %s', info.messageId);
+    try {
+        const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+        console.log('Email sent successfully via API. Message ID:', data.messageId);
+        return data;
+    } catch (error) {
+        console.error('Brevo API Error:', error);
+        throw new Error('Email could not be sent');
+    }
 };
 
 module.exports = sendEmail;
