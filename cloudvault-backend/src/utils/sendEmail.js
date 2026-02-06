@@ -15,7 +15,7 @@ const sendEmail = async (options) => {
     // Using basic SMTP or Gmail (Not recommended for production without OAuth2, but fine for simple projects)
     // Switch to Port 587 (STARTTLS) which is often less blocked on Cloud Servers than 465
     const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
+        host: 'smtp-relay.brevo.com',
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
