@@ -15,4 +15,9 @@ app.get('/', (req, res) => {
     res.send('CloudVault API is running');
 });
 
+// UptimeRobot / Health Check endpoints
+app.head('/', (req, res) => res.status(200).end());
+app.get('/ping', (req, res) => res.status(200).send('pong'));
+app.head('/ping', (req, res) => res.status(200).end());
+
 module.exports = app;
