@@ -13,8 +13,11 @@ const sendEmail = async (options) => {
     // });
 
     // Using basic SMTP or Gmail (Not recommended for production without OAuth2, but fine for simple projects)
+    // Switch to Port 587 (STARTTLS) which is often less blocked on Cloud Servers than 465
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, // true for 465, false for other ports
         auth: {
             user: process.env.SMTP_EMAIL,
             pass: process.env.SMTP_PASSWORD,
@@ -22,7 +25,7 @@ const sendEmail = async (options) => {
         tls: {
             rejectUnauthorized: false
         },
-        family: 4 // Force IPv4 to avoid Render IPv6 issues
+        family: 4 // Force IPv4
     });
 
     const message = {
