@@ -66,11 +66,18 @@ const registerUser = async (req, res) => {
 
             res.status(200).json({ success: true, message: 'Email sent' });
         } catch (error) {
-            console.error(error);
-            user.verificationToken = undefined;
-            user.verificationTokenExpire = undefined;
-            await user.save();
-            return res.status(500).json({ message: 'Email could not be sent' });
+            console.error('Email send failed (Check logs for activation link):', error.message);
+            // DO NOT delete the token. Allow manual activation via console log link.
+            // user.verificationToken = undefined;
+            // user.verificationTokenExpire = undefined;
+            // await user.save();
+
+            // Return SUCCESS anyway so UI doesn't hang.
+            // The user (admin) can get the link from the logs.
+            return res.status(200).json({
+                success: true,
+                message: 'Email failed to send, but account created. Please check server logs for activation link.'
+            });
         }
 
     } catch (error) {
