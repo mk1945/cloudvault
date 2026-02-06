@@ -30,7 +30,6 @@ const registerUser = async (req, res) => {
             username,
             email,
             password,
-            isVerified: true // DEMO MODE: Auto-verify so login works immediately without email
         });
 
         // Generate Activation Token

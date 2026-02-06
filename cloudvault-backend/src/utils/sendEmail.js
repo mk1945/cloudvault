@@ -16,7 +16,7 @@ const sendEmail = async (options) => {
     // Switch to Port 587 (STARTTLS) which is often less blocked on Cloud Servers than 465
     const transporter = nodemailer.createTransport({
         host: 'smtp-relay.brevo.com',
-        port: 587,
+        port: 2525, // Port 2525 is a common alternative when 587 is blocked
         secure: false, // true for 465, false for other ports
         auth: {
             user: process.env.SMTP_EMAIL,
