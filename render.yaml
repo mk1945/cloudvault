@@ -26,13 +26,11 @@ services:
         sync: false
       - key: SMTP_PASSWORD
         sync: false
-      # We will set FRONTEND_URL to the frontend service URL auto-magically or user sets it
 
+staticSites:
   # FRONTEND SERVICE
-  - type: static
-    name: cloudvault-frontend
+  - name: cloudvault-frontend
     root: cloudvault-frontend
-    plan: free
     buildCommand: npm install && npm run build
     publish: dist
     routes:
