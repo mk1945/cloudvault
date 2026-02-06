@@ -1,0 +1,48 @@
+services:
+  # BACKEND SERVICE
+  - type: web
+    name: cloudvault-backend
+    env: node
+    root: cloudvault-backend
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false # User must enter this in dashboard
+      - key: JWT_SECRET
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_REGION
+        sync: false
+      - key: AWS_BUCKET_NAME
+        sync: false
+      - key: SMTP_EMAIL
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      # We will set FRONTEND_URL to the frontend service URL auto-magically or user sets it
+
+  # FRONTEND SERVICE
+  - type: static
+    name: cloudvault-frontend
+    env: static
+    root: cloudvault-frontend
+    plan: free
+    buildCommand: npm install && npm run build
+    publish: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: cloudvault-backend
+          property: url
