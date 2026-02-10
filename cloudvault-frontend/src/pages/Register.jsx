@@ -10,10 +10,12 @@ const Register = () => {
     const navigate = useNavigate();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
         try {
             await register({ username, email, password });
             setSuccess(true);
@@ -22,6 +24,7 @@ const Register = () => {
             }, 5000);
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed');
+            setLoading(false);
         }
     };
 
@@ -81,8 +84,8 @@ const Register = () => {
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '30px' }}>
                         <Link to="/login" className="link-primary text-sm">Sign in instead</Link>
-                        <button type="submit" className="btn btn-primary">
-                            Register
+                        <button type="submit" className="btn btn-primary" disabled={loading}>
+                            {loading ? 'Registering...' : 'Register'}
                         </button>
                     </div>
                 </form>

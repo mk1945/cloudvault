@@ -6,17 +6,21 @@ const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('');
         setError('');
+        setLoading(true);
 
         try {
             await authService.forgotPassword(email);
             setStatus('Email sent! Please check your inbox for the reset link.');
         } catch (err) {
             setError(err.response?.data?.message || 'Something went wrong');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -41,8 +45,8 @@ const ForgotPassword = () => {
                         />
                     </div>
                     <div style={{ textAlign: 'right', marginTop: '20px' }}>
-                        <button type="submit" className="btn btn-primary">
-                            Send Reset Link
+                        <button type="submit" className="btn btn-primary" disabled={loading}>
+                            {loading ? 'Sending...' : 'Send Reset Link'}
                         </button>
                     </div>
                 </form>

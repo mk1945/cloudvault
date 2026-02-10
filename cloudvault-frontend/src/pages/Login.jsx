@@ -8,14 +8,18 @@ const Login = () => {
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+        setLoading(true);
         try {
             await login({ email, password });
             navigate('/');
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed');
+            setLoading(false);
         }
     };
 
@@ -52,8 +56,8 @@ const Login = () => {
                         <Link to="/forgotpassword" className="link-primary text-sm">Forgot email or password?</Link>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                        <button type="submit" className="btn btn-primary">
-                            Next
+                        <button type="submit" className="btn btn-primary" disabled={loading}>
+                            {loading ? 'Signing in...' : 'Next'}
                         </button>
                     </div>
                 </form>

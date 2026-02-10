@@ -10,6 +10,7 @@ const ResetPassword = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,6 +22,8 @@ const ResetPassword = () => {
             return;
         }
 
+        setLoading(true);
+
         try {
             await authService.resetPassword(token, password);
             setSuccess('Password reset successfully! Redirecting to login...');
@@ -29,6 +32,7 @@ const ResetPassword = () => {
             }, 3000);
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to reset password');
+            setLoading(false);
         }
     };
 
@@ -65,8 +69,8 @@ const ResetPassword = () => {
                         />
                     </div>
                     <div style={{ textAlign: 'right', marginTop: '20px' }}>
-                        <button type="submit" className="btn btn-primary">
-                            Change Password
+                        <button type="submit" className="btn btn-primary" disabled={loading}>
+                            {loading ? 'Resetting...' : 'Change Password'}
                         </button>
                     </div>
                 </form>
